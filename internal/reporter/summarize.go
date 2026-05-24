@@ -15,11 +15,11 @@ type SummaryReport struct {
 
 // SummaryEntry pairs a cron entry with its plain-English description.
 type SummaryEntry struct {
-	Line     int
-	Raw      string
-	Valid    bool
-	Summary  string
-	Error    string
+	Line    int
+	Raw     string
+	Valid   bool
+	Summary string
+	Error   string
 }
 
 // SummarizeReport produces a SummaryReport from a Report, attaching
@@ -62,6 +62,18 @@ func FormatSummaryReport(sr SummaryReport) string {
 		}
 	}
 	return sb.String()
+}
+
+// Stats returns the count of valid and invalid entries in the SummaryReport.
+func (sr SummaryReport) Stats() (valid, invalid int) {
+	for _, e := range sr.Entries {
+		if e.Valid {
+			valid++
+		} else {
+			invalid++
+		}
+	}
+	return valid, invalid
 }
 
 func formatSummaryError(err string) string {
