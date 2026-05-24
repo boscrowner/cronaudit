@@ -58,6 +58,27 @@ func TestSortEntries_ByValid_InvalidFirst(t *testing.T) {
 	}
 }
 
+func TestSortEntries_ByValid_CountsPreserved(t *testing.T) {
+	r := buildSortTestReport()
+	result := SortEntries(r, SortByValid)
+
+	var validCount, invalidCount int
+	for _, e := range result {
+		if e.Error == "" {
+			validCount++
+		} else {
+			invalidCount++
+		}
+	}
+
+	if validCount != r.Stats.Valid {
+		t.Errorf("expected %d valid entries, got %d", r.Stats.Valid, validCount)
+	}
+	if invalidCount != r.Stats.Invalid {
+		t.Errorf("expected %d invalid entries, got %d", r.Stats.Invalid, invalidCount)
+	}
+}
+
 func TestSortEntries_DoesNotMutateOriginal(t *testing.T) {
 	r := buildSortTestReport()
 	originalRaw := make([]string, len(r.Entries))
