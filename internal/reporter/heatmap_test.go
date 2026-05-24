@@ -86,3 +86,12 @@ func TestBuildHeatmap_MultipleCellsAccumulate(t *testing.T) {
 		t.Errorf("expected count=2, got %d", result.Cells[0].Count)
 	}
 }
+
+func TestBuildHeatmap_EmptyReport(t *testing.T) {
+	// A report with no entries should produce a heatmap with zero cells.
+	r := buildHeatmapReport([]Entry{})
+	result := BuildHeatmap(r)
+	if len(result.Cells) != 0 {
+		t.Errorf("expected 0 cells for empty report, got %d", len(result.Cells))
+	}
+}
