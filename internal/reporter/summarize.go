@@ -76,6 +76,18 @@ func (sr SummaryReport) Stats() (valid, invalid int) {
 	return valid, invalid
 }
 
+// InvalidEntries returns a slice containing only the invalid SummaryEntries.
+// This is useful when callers want to report or log only the problematic lines.
+func (sr SummaryReport) InvalidEntries() []SummaryEntry {
+	var invalid []SummaryEntry
+	for _, e := range sr.Entries {
+		if !e.Valid {
+			invalid = append(invalid, e)
+		}
+	}
+	return invalid
+}
+
 func formatSummaryError(err string) string {
 	if err == "" {
 		return "invalid entry"
